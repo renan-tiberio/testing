@@ -11,7 +11,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "validate": "pnpm run typecheck && pnpm run lint && pnpm run format:check",
-    "prepare": "node -e \"import('husky').then(({ default: husky }) => { const msg = husky(); if (msg) console.log(msg) }).catch((e) => { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e })\""
+    "prepare": "node -e \"import('husky').then(({ default: husky }) => { const msg = husky(); if (msg) console.log(msg) }).catch((e) => { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e })\"",
+    "db:migrate": "node scripts/db.mjs migrate",
+    "db:seed": "node scripts/db.mjs seed",
+    "test": "node --env-file=.env.local --test \"tests/**/*.test.ts\"",
+    "vercel-build": "node scripts/db.mjs migrate && node scripts/db.mjs seed && next build"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.6",
@@ -30,7 +34,9 @@
     "@eslint-react/eslint-plugin": "^5.27.2",
     "@eslint/js": "^10.0.1",
     "@next/eslint-plugin-next": "16.4.2",
+    "@playwright/test": "^1.64.1",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript/native": "npm:typescript@^7.0.2",
@@ -47,6 +53,7 @@
     "globals": "^17.13.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
+    "pg": "^8.23.1",
     "postcss": "^8",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
