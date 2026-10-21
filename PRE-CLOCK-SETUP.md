@@ -17,6 +17,17 @@ Everything after the last commit that touches this file was written during the a
 - `.env.example` lists the four variables the app needs; `.gitignore` ignores `.env*` except `.env.example`.
 - Short `README.md` replacing the template one.
 
+## Tooling
+
+- ESLint 10 flat config (`eslint.config.mjs` + `eslint.house-rules.mjs`): eslint-config-love, typescript-eslint, @eslint-react, react-hooks 7, react-refresh, import-x, prefer-arrow-functions, better-tailwindcss, @next/eslint-plugin-next; Prettier 3 last.
+- Prettier 3 (`.prettierrc.json`, Tailwind class sorting), `.editorconfig`, `.vscode/` recommendations and settings.
+- TypeScript 7 compiles (`tsc`); TypeScript 6 is installed as `typescript` for typescript-eslint and Next.js. Strict options on: `noUncheckedIndexedAccess`, `noUnusedLocals`, `noUnusedParameters`, `verbatimModuleSyntax`.
+- Husky + lint-staged: pre-commit runs ESLint/Prettier on staged files and the type check; pre-push runs `pnpm validate` and `pnpm build`.
+- The template code was rewritten to pass these rules with no rule relaxed and no `eslint-disable`: arrow functions, named exports outside Next.js entry files, absolute `@/` imports, explicit return types and null checks, `ref` as a prop instead of `forwardRef`, and `lib/env.ts` validating the Supabase variables instead of `process.env.X!`.
+- `next.config.ts`: `partialPrefetching: true` alongside `cacheComponents`, as Next.js 16.4 asks of new projects.
+- Components follow atomic design (`components/atoms`, `molecules`, `organisms`, `templates`); `import-x/no-restricted-paths` rejects imports from a higher level. Auth pages share `app/auth/layout.tsx` (AuthTemplate); `/` and `/protected` use MainTemplate.
+- CI/CD: GitHub Actions runs `pnpm validate` + `pnpm build`; the Vercel project deploys from the GitHub repository (production on `main`, previews elsewhere).
+
 ## Database
 
 - Supabase Postgres 17, free plan, region `iad1`, provisioned through the Vercel Marketplace.

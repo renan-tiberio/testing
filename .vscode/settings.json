@@ -1,0 +1,45 @@
+{
+  // Prettier on save, only where a Prettier config applies.
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "prettier.requireConfig": true,
+
+  // ESLint fixes on save. Import order belongs to import-x/order, so TS
+  // "organize imports" stays off (it sorts differently).
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+
+  // Language-specific user settings beat general workspace settings: pin them here.
+  "[typescript][typescriptreact][javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "never"
+    }
+  },
+  "[json][jsonc][css][tailwindcss][html][markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  // Auto-imports use "@/..." (relative imports are a lint error) and `import type`.
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  // TS 7 language server when TypeScriptTeam.native-preview is installed. It does not
+  // load tsconfig plugins, so the Next.js editor plugin is off while this is true.
+  "js/ts.experimental.useTsgo": true,
+
+  // Tailwind 3: the config file (Tailwind 4 points at the CSS entry point instead).
+  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+  "files.associations": { "*.css": "tailwindcss" },
+  "editor.quickSuggestions": { "strings": "on" },
+
+  // Matches Prettier's printWidth.
+  "editor.rulers": [100],
+
+  "search.exclude": { "**/.next": true, ".husky/_": true }
+}

@@ -1,0 +1,14 @@
+.next/
+out/
+coverage/
+next-env.d.ts
+pnpm-lock.yaml
+# Generated code: `supabase gen types` output (adjust the paths)
+generated/
+types/database.types.ts
+# Local agent skills, kept out of the repository
+.agents/
+.claude/
+skills-lock.json
+# Migration spec kept as written
+lint-migration-nextjs.md

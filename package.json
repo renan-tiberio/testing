@@ -1,10 +1,17 @@
 {
   "private": true,
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "typecheck": "next typegen && tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate": "pnpm run typecheck && pnpm run lint && pnpm run format:check",
+    "prepare": "node -e \"import('husky').then(({ default: husky }) => { const msg = husky(); if (msg) console.log(msg) }).catch((e) => { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e })\""
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.6",
@@ -20,16 +27,39 @@
     "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint-react/eslint-plugin": "^5.27.2",
+    "@eslint/js": "^10.0.1",
+    "@next/eslint-plugin-next": "16.4.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.1",
+    "eslint": "^10.13.0",
+    "eslint-config-love": "^158.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-better-tailwindcss": "^4.9.1",
+    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-prefer-arrow-functions": "^3.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "postcss": "^8",
+    "prettier": "^3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5"
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.71.2"
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts,tsx}": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ],
+    "*.{json,css,md,html}": "prettier --write"
   }
 }

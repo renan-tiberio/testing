@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "EditorConfig.EditorConfig",
+    // Optional: TypeScript 7 language server, the same compiler `tsc` runs here.
+    "TypeScriptTeam.native-preview"
+  ],
+  "unwantedRecommendations": [
+    // Re-formats on top of Prettier and runs its own eslint --fix: double formatting.
+    "rvest.vs-code-prettier-eslint"
+  ]
+}

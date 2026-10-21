@@ -1,39 +1,42 @@
-import { createClient } from "@/lib/supabase/server";
-import { type EmailOtpType } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
-import { type NextRequest } from "next/server";
+import { redirect } from 'next/navigation'
 
-// Only same-origin paths, so `next` cannot send the user to another site
-// (e.g. `?next=https://evil.com`, `?next=//evil.com`, `?next=/\evil.com`).
-function safeNextPath(next: string | null): string {
-  if (!next || !next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\")) {
-    return "/";
-  }
-  return next;
-}
+import { safeNextPath } from '@/lib/safe-next-path'
+import { createClient } from '@/lib/supabase/server'
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const token_hash = searchParams.get("token_hash");
-  const type = searchParams.get("type") as EmailOtpType | null;
-  const next = safeNextPath(searchParams.get("next"));
+import type { EmailOtpType } from '@supabase/supabase-js'
+import type { NextRequest } from 'next/server'
 
-  if (token_hash && type) {
-    const supabase = await createClient();
+const EMAIL_OTP_TYPES: readonly EmailOtpType[] = [
+  'signup',
+  'invite',
+  'magiclink',
+  'recovery',
+  'email_change',
+  'email',
+]
 
-    const { error } = await supabase.auth.verifyOtp({
-      type,
-      token_hash,
-    });
-    if (!error) {
-      // redirect user to specified redirect URL or root of app
-      redirect(next);
-    } else {
-      // redirect the user to an error page with some instructions
-      redirect(`/auth/error?error=${error?.message}`);
-    }
+const isEmailOtpType = (value: string | null): value is EmailOtpType =>
+  EMAIL_OTP_TYPES.some((type) => type === value)
+
+const errorPath = (message: string): string => `/auth/error?error=${encodeURIComponent(message)}`
+
+export const GET = async (request: NextRequest): Promise<never> => {
+  const {
+    nextUrl: { searchParams },
+  } = request
+  const tokenHash = searchParams.get('token_hash')
+  const type = searchParams.get('type')
+
+  if (tokenHash === null || tokenHash === '' || !isEmailOtpType(type)) {
+    redirect(errorPath('No token hash or type'))
   }
 
-  // redirect the user to an error page with some instructions
-  redirect(`/auth/error?error=No token hash or type`);
+  const supabase = await createClient()
+  const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash })
+
+  if (error !== null) {
+    redirect(errorPath(error.message))
+  }
+
+  redirect(safeNextPath(searchParams.get('next')))
 }

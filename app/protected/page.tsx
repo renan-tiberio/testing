@@ -1,23 +1,26 @@
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense } from 'react'
 
-import { createClient } from "@/lib/supabase/server";
+import { redirect } from 'next/navigation'
 
-async function SignedInAs() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
+import { createClient } from '@/lib/supabase/server'
 
-  if (error || !data?.claims) {
-    redirect("/auth/login");
+import type { JSX } from 'react'
+
+const SignedInAs = async (): Promise<JSX.Element> => {
+  const supabase = await createClient()
+  const { data, error } = await supabase.auth.getClaims()
+
+  if (error !== null || data === null) {
+    redirect('/auth/login')
   }
 
-  return <p>Signed in as {data.claims.email}</p>;
+  return <p>Signed in as {data.claims.email}</p>
 }
 
-export default function ProtectedPage() {
-  return (
-    <Suspense>
-      <SignedInAs />
-    </Suspense>
-  );
-}
+const ProtectedPage = (): JSX.Element => (
+  <Suspense>
+    <SignedInAs />
+  </Suspense>
+)
+
+export default ProtectedPage

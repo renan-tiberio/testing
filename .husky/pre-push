@@ -1,0 +1,4 @@
+# Full gate: types, lint, formatting, then the production build.
+pnpm run validate
+pnpm run build
+# Add `pnpm test` here if the project has tests.

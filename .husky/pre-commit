@@ -1,0 +1,5 @@
+# Staged files: ESLint --fix + Prettier (config: "lint-staged" in package.json).
+pnpm exec lint-staged
+
+# Whole-project type check: tsc cannot check staged files in isolation.
+pnpm run typecheck

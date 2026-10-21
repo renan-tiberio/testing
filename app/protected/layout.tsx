@@ -1,14 +1,9 @@
-import { SiteHeader } from "@/components/site-header";
+import { MainTemplate } from '@/components/templates/main-template'
 
-export default function ProtectedLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <main className="min-h-screen flex flex-col items-center">
-      <SiteHeader />
-      <div className="flex-1 w-full max-w-5xl p-5">{children}</div>
-    </main>
-  );
-}
+import type { JSX, ReactNode } from 'react'
+
+const ProtectedLayout = ({ children }: Readonly<{ children: ReactNode }>): JSX.Element => (
+  <MainTemplate>{children}</MainTemplate>
+)
+
+export default ProtectedLayout
